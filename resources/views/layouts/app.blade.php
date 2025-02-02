@@ -74,6 +74,7 @@
 
         <main class="py-4">
             @yield('content')
+            @yield('document.index')
         </main>
     </div>
 </body>
