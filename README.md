@@ -29,6 +29,8 @@ App\Http\Requests\Document\StoreRequest
 ```php
 App\Http\Controllers\Document\IndexController
 12    $documents = Document::sortable()->paginate(8);
+```
+```php
 App\Http\Services\DocumentService
 46    return Document::paginate(8);
 49    return $documents->unique()->toQuery()->sortable()->paginate(8);
