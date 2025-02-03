@@ -19,17 +19,20 @@ Document Storage System - система хранения документов �
 ## Настройка системы
 
 Для добавления или измненения разрешенных расширений файлов кроме .pdf и .docx нужно внести изменения в строке файла
-<div><p>App\Http\Requests\Document\StoreRequest</div></p>
-<div><p>26    "'file' => 'required|file|mimes:docx,pdf',</div></p>
+```php
+App\Http\Requests\Document\StoreRequest
+26    "'file' => 'required|file|mimes:docx,pdf',
+```
 
 Для измненения количества отображаемых документов на странице нужно изменить значение 8 на требуемое в функции paginate() в строках:
 
-<div><p>App\Http\Controllers\Document\IndexController</div></p>
-<div><p>12    $documents = Document::sortable()->paginate(8);</div></p>
-
-<div><p>App\Http\Services\DocumentService</div></p>
-<div><p>46    return Document::paginate(8);</div></p>
-<div><p>49    return $documents->unique()->toQuery()->sortable()->paginate(8);</div></p>
+```php
+App\Http\Controllers\Document\IndexController
+12    $documents = Document::sortable()->paginate(8);
+App\Http\Services\DocumentService
+46    return Document::paginate(8);
+49    return $documents->unique()->toQuery()->sortable()->paginate(8);
+```
 
 ## Используемые сторонние библиотеки
 
