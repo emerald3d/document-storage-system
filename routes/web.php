@@ -10,8 +10,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/', IndexController::class)->name('document.index');
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', IndexController::class)->name('document.index');
     Route::get('/documents/create', CreateController::class)->name('document.create');
     Route::post('/documents/create', StoreController::class)->name('document.store');
     Route::get('/documents/search', SearchController::class)->name('document.search');
