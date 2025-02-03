@@ -9,7 +9,7 @@ class IndexController extends DocumentController
 {
     public function __invoke(): View
     {
-        $documents = Document::sortable()->paginate(6);
+        $documents = Document::sortable()->paginate(8);
 
         return view('document.index', compact('documents'));
     }

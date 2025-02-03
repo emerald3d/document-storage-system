@@ -6,6 +6,7 @@ use App\Http\Requests\Document\SearchRequest;
 use App\Http\Requests\Document\StoreRequest;
 use App\Models\Document;
 use App\Models\User;
+use http\QueryString;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class DocumentService
@@ -39,6 +40,12 @@ class DocumentService
             $documents->push($document);
         }
 
-        return $documents->unique()->toQuery()->sortable()->paginate(6);
+        $documents = $documents->unique();
+
+        if ($documents->isEmpty()) {
+            return Document::paginate(8);
+        }
+
+        return $documents->unique()->toQuery()->sortable()->paginate(8);
     }
 }
