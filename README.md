@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://laravel.com" target="_blank"><img src="https://t3.ftcdn.net/jpg/07/32/10/90/360_F_732109080_4lXwGofazqAiysUpcCnrbflsNOl9EMdW.jpg" width="400" alt="Emerald Logo"></a>
+    <a href="https://laravel.com" target="_blank"><img src="https://t3.ftcdn.net/jpg/07/32/10/90/360_F_732109080_4lXwGofazqAiysUpcCnrbflsNOl9EMdW.jpg" alt="Emerald Logo"></a>
 </p>
 
 ## Описание
