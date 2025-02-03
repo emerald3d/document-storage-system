@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Document;
 
 use App\Models\Document;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\View\View;
 
 class IndexController extends DocumentController
 {
-    public function __invoke()
+    public function __invoke(): View
     {
-        $documents = Document::all();
+        $documents = Document::sortable()->paginate(6);
+
         return view('document.index', compact('documents'));
     }
 }

@@ -31,15 +31,27 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/docs">Список документов</a>
+                            <a class="nav-link{{ Route::currentRouteNamed('document.index') ? ' active' : '' }}" href="{{ route('document.index') }}">Список документов</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">Добавить документ</a>
+                            <a class="nav-link{{ Route::currentRouteNamed('document.create') ? ' active' : '' }}" href="{{ route('document.create') }}">Добавить документ</a>
                         </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <form class="form-inline" action="{{ route('document.search') }}" method="GET">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <input class="form-control mr-sm-2" type="search" name="search" placeholder="Название" aria-label="Search">
+                                    </div>
+                                    <div class="col-sm">
+                                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Найти</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -80,6 +92,7 @@
         <main class="py-4">
             @yield('content')
             @yield('document.index')
+            @yield('document.create')
         </main>
     </div>
 </body>

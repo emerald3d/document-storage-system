@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name')->comment('Название документа');
             $table->timestamps();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('file_name')->comment('Название файла в системе');
+            $table->string('file_name')->comment('Оригинальное название файла');
+            $table->string('file_path')->comment('Путь к файлу в системе');
             $table->softDeletes();
         });
     }
