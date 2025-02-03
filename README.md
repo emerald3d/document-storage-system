@@ -40,3 +40,6 @@ App\Http\Services\DocumentService
 
 <div><p>Для системы шаблонов был использован Bootstrap</div></p>
 <div><p>Для сортировки документов применен <a href="https://github.com/Kyslik/column-sortable">Kyslik/column-sortable<a></div></p>
+
+### Специальное предложение
+Используя этот исходник вы получаете favicon с JoJo!
