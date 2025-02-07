@@ -2,50 +2,42 @@
 
 namespace App\Http\Services;
 
-use App\Http\Requests\Document\SearchRequest;
 use App\Http\Requests\Document\StoreRequest;
 use App\Models\Document;
 use App\Models\User;
-use http\QueryString;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class DocumentService
 {
     public function store(StoreRequest $request): void {
         $userId = $request->user()->id;
-        $name = $request->validated()['name'];
-        $fileName = $request->file('file')->getClientOriginalName();
-        $filePath = $request->file('file')->storePublicly("documents/$userId", 'public');
+        $file = $request->file('file');
 
         Document::create([
             'user_id' => $userId,
-            'name' => $name,
-            'file_name' => $fileName,
-            'file_path' => $filePath,
+            'name' => $request->input('name'),
+            'file_name' => $file->getClientOriginalName(),
+            'file_path' => $file->storePublicly("documents/$userId", 'public'),
         ]);
     }
 
-    public function search(SearchRequest $request): ?LengthAwarePaginator {
-        $documents = Document::where('name', 'like', '%'.$request->input('search').'%')->get();
-        $documentsDate = Document::where('created_at', 'like', '%'.$request->input('search').'%')->get();
-        $users = User::where('name', 'like', '%'.$request->input('search').'%')->get();
+    public function search(string $search): ?LengthAwarePaginator {
+        $search = '%'.$search.'%';
+        $authors = User::where('name', 'like', $search)->get();
+        $documents = Document
+            ::where('name', 'like', $search)
+            ->orWhere('created_at', 'like', $search)
+            ->orWhere('file_name', 'like', $search) // Пусть будет тоже, хоть и необязательно)
+            ->get();
 
-        foreach ($users as $user) {
-            foreach ($user->documents as $document) {
-                $documents->push($document);
-            }
-        }
-
-        foreach ($documentsDate as $document) {
-            $documents->push($document);
-        }
-
-        $documents = $documents->unique();
+        $authors->each(function ($author) use(&$documents) {
+            $documents = $documents->concat($author->documents);
+        });
 
         if ($documents->isEmpty()) {
             return null;
         }
 
-        return $documents->unique()->toQuery()->sortable()->paginate(8);
+        return $documents->toQuery()->sortable()->paginate(8);
     }
 }

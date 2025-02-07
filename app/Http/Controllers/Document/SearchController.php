@@ -11,7 +11,7 @@ class SearchController extends DocumentController
 {
     public function __invoke(SearchRequest $request): View
     {
-        $documents = $this->service->search($request);
+        $documents = $this->service->search($request->input('search'));
 
         if ($documents != null) {
             return view('document.index', compact('documents'));
