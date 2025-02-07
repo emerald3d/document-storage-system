@@ -25,7 +25,7 @@ class DocumentService
         ]);
     }
 
-    public function search(SearchRequest $request): LengthAwarePaginator {
+    public function search(SearchRequest $request): ?LengthAwarePaginator {
         $documents = Document::where('name', 'like', '%'.$request->input('search').'%')->get();
         $documentsDate = Document::where('created_at', 'like', '%'.$request->input('search').'%')->get();
         $users = User::where('name', 'like', '%'.$request->input('search').'%')->get();
@@ -43,7 +43,7 @@ class DocumentService
         $documents = $documents->unique();
 
         if ($documents->isEmpty()) {
-            return Document::paginate(8);
+            return null;
         }
 
         return $documents->unique()->toQuery()->sortable()->paginate(8);

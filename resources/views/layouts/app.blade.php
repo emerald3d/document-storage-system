@@ -44,7 +44,7 @@
                             <form class="form-inline" action="{{ route('document.search') }}" method="GET">
                                 <div class="row">
                                     <div class="col-sm">
-                                        <input class="form-control mr-sm-2" type="search" name="search" placeholder="Название" aria-label="Search">
+                                        <input class="form-control mr-sm-2" type="search" name="search" value="{{ old('search') }}" placeholder="Название, автор, дата" aria-label="Search">
                                     </div>
                                     <div class="col-sm">
                                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Найти</button>
