@@ -13,10 +13,6 @@ class SearchController extends DocumentController
     {
         $documents = $this->service->search($request->input('search'));
 
-        if ($documents != null) {
-            return view('document.index', compact('documents'));
-        }
-
-        return view('document.not_found');
+        return view('document.index', compact('documents'));
     }
 }

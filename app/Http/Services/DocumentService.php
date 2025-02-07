@@ -21,32 +21,19 @@ class DocumentService
         ]);
     }
 
-    public function search(string $search): ?LengthAwarePaginator {
+    public function search(string $search): LengthAwarePaginator {
         $search = '%'.$search.'%';
         $authors = User::where('name', 'like', $search)->get();
+
         $documents = Document
             ::where('name', 'like', $search)
             ->orWhere('created_at', 'like', $search)
-            ->orWhere('file_name', 'like', $search) // Пусть будет тоже, хоть и необязательно)
-            ->get();
+            ->orWhere('file_name', 'like', $search); // Пусть будет тоже, хоть и необязательно)
 
         $authors->each(function ($author) use(&$documents) {
-            $documents = $documents->concat($author->documents);
+            $documents->union(Document::where('user_id', 'like', $author->id));
         });
 
-        // Попытка собрать многие запросы к БД в один
-        //if ($authors->isNotEmpty()) {
-        //    $authorsDocs = Document::where('user_id', 'like', $authors[0]->id);
-        //    $authors->each(function ($author) use(&$authorsDocs) {
-        //        $authorsDocs->union(Document::where('user_id', 'like', $author->id));
-        //    });
-        //    $documents = $documents->concat($authorsDocs->get());
-        //}
-
-        if ($documents->isEmpty()) {
-            return null;
-        }
-
-        return $documents->toQuery()->sortable()->paginate(8);
+        return $documents->sortable()->paginate(8);
     }
 }
