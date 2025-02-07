@@ -34,6 +34,15 @@ class DocumentService
             $documents = $documents->concat($author->documents);
         });
 
+        // Попытка собрать многие запросы к БД в один
+        //if ($authors->isNotEmpty()) {
+        //    $authorsDocs = Document::where('user_id', 'like', $authors[0]->id);
+        //    $authors->each(function ($author) use(&$authorsDocs) {
+        //        $authorsDocs->union(Document::where('user_id', 'like', $author->id));
+        //    });
+        //    $documents = $documents->concat($authorsDocs->get());
+        //}
+
         if ($documents->isEmpty()) {
             return null;
         }
