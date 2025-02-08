@@ -24,13 +24,6 @@ class DocumentController extends Controller
         return view('document.index', compact('documents'));
     }
 
-    public function search(SearchRequest $request): View
-    {
-        $documents = $this->service->search($request->input('search'));
-
-        return view('document.index', compact('documents'));
-    }
-
     public function create(): View
     {
         return view('document.create');
@@ -41,5 +34,12 @@ class DocumentController extends Controller
         $this->service->store($request);
 
         return redirect()->route('document.index');
+    }
+
+    public function search(SearchRequest $request): View
+    {
+        $documents = $this->service->search($request->input('search'));
+
+        return view('document.index', compact('documents'));
     }
 }
