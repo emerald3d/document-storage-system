@@ -6,6 +6,7 @@ use App\Http\Requests\Document\StoreRequest;
 use App\Models\Document;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Fluent;
 
 class DocumentService
 {
@@ -13,12 +14,14 @@ class DocumentService
         $userId = $request->user()->id;
         $file = $request->file('file');
 
-        Document::create([
+        $document = new Fluent([
             'user_id' => $userId,
             'name' => $request->input('name'),
             'file_name' => $file->getClientOriginalName(),
             'file_path' => $file->storePublicly("documents/$userId", 'public'),
         ]);
+
+        Document::create($document->toArray());
     }
 
     public function search(string $search): LengthAwarePaginator {

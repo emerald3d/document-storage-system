@@ -8,10 +8,11 @@ use App\Http\Controllers\DocumentController;
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::redirect('/', '/documents');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::controller(DocumentController::class)->group( function () {
-        Route::get('/', 'index')
+        Route::get('/documents', 'index')
             ->name('document.index');
         Route::get('/documents/create', 'create')
             ->name('document.create');
