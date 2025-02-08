@@ -6,6 +6,21 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
 {
+    public function getUserId(): int
+    {
+        return $this->user()->id;
+    }
+
+    //хз что тут возвращает, скорее всего строка, поэтому тип возвращаемый не напишу
+    public function getFile()
+    {
+        return $this->file('file');
+    }
+
+    public function getName(): string
+    {
+        return $this->input('name');
+    }
     /**
      * Determine if the user is authorized to make this request.
      */

@@ -11,14 +11,11 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::redirect('/', '/documents');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::controller(DocumentController::class)->group( function () {
-        Route::get('/documents', 'index')
-            ->name('document.index');
-        Route::get('/documents/create', 'create')
-            ->name('document.create');
-        Route::post('/documents/create', 'store')
-            ->name('document.store');
-        Route::get('/documents/search', 'search')
-            ->name('document.search');
+    //тут возможно наебнулось, надо проверить
+    Route::controller(DocumentController::class)->prefix('documents')->group( function () {
+        Route::get('', 'index')->name('document.index');
+        Route::get('/create', 'create')->name('document.create');
+        Route::post('/create', 'store')->name('document.store');
+        Route::get('/search', 'search')->name('document.search');
     });
 });
