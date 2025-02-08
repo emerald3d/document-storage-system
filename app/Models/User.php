@@ -47,7 +47,8 @@ class User extends Authenticatable
         ];
     }
 
-    protected function documents(): HasMany {
+    protected function documents(): HasMany
+    {
         return $this->hasMany(Document::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\DocumentData;
 use App\Http\Requests\Document\SearchRequest;
 use App\Http\Requests\Document\StoreRequest;
 use App\Http\Services\DocumentService;
@@ -18,7 +19,8 @@ class DocumentController extends Controller
         $this->service = $service;
     }
 
-    public function index(): View {
+    public function index(): View
+    {
         $documents = Document::sortable()->paginate(8);
 
         return view('document.index', compact('documents'));
@@ -39,6 +41,10 @@ class DocumentController extends Controller
     public function search(SearchRequest $request): View
     {
         $documents = $this->service->search($request->input('search'));
+        //это случай ошибки бд
+        if ($documents instanceof DocumentData) {
+            //возможно отдавать другой view с ошибкой
+        }
 
         return view('document.index', compact('documents'));
     }
