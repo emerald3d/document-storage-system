@@ -23,16 +23,16 @@ class DocumentService
 
     public function search(string $search): LengthAwarePaginator {
         $search = '%'.$search.'%';
-        $authors = User::where('name', 'like', $search)->get();
+        $authors = User::where('name', 'like', $search)->get()->modelKeys();
 
         $documents = Document
             ::where('name', 'like', $search)
             ->orWhere('created_at', 'like', $search)
             ->orWhere('file_name', 'like', $search); // Пусть будет тоже, хоть и необязательно)
 
-        $authors->each(function ($author) use(&$documents) {
-            $documents->union(Document::where('user_id', 'like', $author->id));
-        });
+        foreach ($authors as $userId) {
+            $documents->union(Document::where('user_id', 'like', $userId));
+        }
 
         return $documents->sortable()->paginate(8);
     }
