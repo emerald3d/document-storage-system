@@ -7,5 +7,5 @@ interface FileRepositoryContract
 {
     public function getFileName($file): string;
 
-    public function getFilePath($file, $userId): string;
+    public function getFilePath($file, int $userId): string;
 }

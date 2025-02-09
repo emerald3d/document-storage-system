@@ -1,22 +1,24 @@
 <?php
+declare(strict_types=1);
 
-namespace App\Http\Services;
+namespace App\Repositories;
 
+use App\Contracts\Collection;
+use App\Contracts\DocumentRepositoryContract;
 use App\Data\DocumentData;
 use App\Http\Requests\Document\StoreRequest;
 use App\Models\Document;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Fluent;
 
-class DocumentService
+class DocumentRepository implements DocumentRepositoryContract
 {
-    public  function store(StoreRequest $request): void
+    public function store(StoreRequest $request): void
     {
         Document::create(DocumentData::success($request)->toArray());
     }
 
-    public function search(string $search): DocumentData|Collection
+    public function search(string $search): LengthAwarePaginator
     {
         $search = '%'.$search.'%';
         //когда есть запросы в бд лучше оборачивать в try-catch т.к бд всегда отвалиться может
@@ -37,7 +39,7 @@ class DocumentService
         $result = collect();
         $documents = $documents->sortable()->paginate(8);
         $documents->each(function($document) use(&$result){
-           $result->add(DocumentData::fromApi($document));
+            $result->add(DocumentData::fromApi($document));
         });
 
         return $documents;
