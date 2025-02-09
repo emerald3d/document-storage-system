@@ -19,3 +19,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/search', 'search')->name('document.search');
     });
 });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
