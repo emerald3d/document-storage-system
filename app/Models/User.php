@@ -12,6 +12,10 @@ class User extends \TCG\Voyager\Models\User
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+    public function isAdmin(): bool
+    {
+        return $this->role_id === Role::Admin->value;
+    }
 
     /**
      * The attributes that are mass assignable.

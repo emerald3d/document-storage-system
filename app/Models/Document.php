@@ -10,6 +10,13 @@ class Document extends Model
 {
     use Sortable, HasFactory;
 
+    const PAGINATE_NUMBER = 8;
+
+    public static function getPaginateNumber(): int
+    {
+        return static::PAGINATE_NUMBER;
+    }
+
     protected $table = 'documents';
     protected $fillable = ['name', 'user_id', 'file_name', 'file_path'];
     public $sortable = ['name', 'created_at', 'user_id'];
