@@ -24,22 +24,19 @@ App\Http\Requests\Document\StoreRequest
 26    "'file' => 'required|file|mimes:docx,pdf',
 ```
 
-Для измненения количества отображаемых документов на странице нужно изменить значение 8 на требуемое в функции paginate() в строках:
+Для измненения количества отображаемых документов на странице нужно изменить значение 8 на требуемое:
 
 ```php
-App\Http\Controllers\Document\IndexController
-12    $documents = Document::sortable()->paginate(8);
-```
-```php
-App\Http\Services\DocumentService
-46    return Document::paginate(8);
-49    return $documents->unique()->toQuery()->sortable()->paginate(8);
+App\Models\Document.php
+13    const PAGINATE_NUMBER = 8;
 ```
 
 ## Используемые сторонние библиотеки
 
 <div><p>Для системы шаблонов был использован Bootstrap</div></p>
 <div><p>Для сортировки документов применен <a href="https://github.com/Kyslik/column-sortable">Kyslik/column-sortable<a></div></p>
+<div><p>Для административной панели <a href="https://github.com/thedevdojo/voyager">Voyager 1.8.0<a></div></p>
+
 
 ### Специальное предложение
 Используя этот исходник вы получаете favicon с JoJo!

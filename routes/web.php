@@ -16,11 +16,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('', 'index')->name('document.index');
         Route::get('/create', 'create')->name('document.create');
         Route::post('/create', 'store')->name('document.store');
+        Route::get('/edit/{document}', 'edit')->name('document.edit');
+        Route::patch('/edit/{document}', 'update')->name('document.update');
+        Route::delete('/delete/{document}', 'delete')->name('document.delete');
         Route::get('/search', 'search')->name('document.search');
+    });
+    Route::group(['prefix' => 'admin'], function () {
+        Voyager::routes();
     });
 });
 
-
-Route::group(['prefix' => 'admin'], function () {
-    Voyager::routes();
-});

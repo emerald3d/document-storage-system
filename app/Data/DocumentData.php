@@ -5,6 +5,7 @@ namespace App\Data;
 
 use App\Contracts\FileRepositoryContract;
 use App\Http\Requests\Document\StoreRequest;
+use App\Http\Requests\Document\UpdateRequest;
 use App\Models\Document;
 use Illuminate\Support\Fluent;
 
@@ -32,6 +33,36 @@ class DocumentData extends Fluent
         $data->file_path = $fileRepository->getFilePath($file, $userId);
 
         $data->has_error = false;
+        return $data;
+    }
+
+    public static function update(UpdateRequest $request): DocumentData
+    {
+        $document = Document::find($request->getDocumentId());
+        $userId = $request->getUserId();
+        $userAdmin = $request->isUserAdmin();
+
+        $data = new self();
+
+        if ($document->user_id == $userId || $userAdmin) {
+            if ($request->getName() !== null)
+            {
+                $data->name = $request->getName();
+            }
+
+            $file = $request->getFile();
+            if ($file !== null) {
+                $fileRepository = app()->make(FileRepositoryContract::class);
+                $data->file_name = $fileRepository->getFileName($file);
+                $data->file_path = $fileRepository->getFilePath($file, $userId);
+                $fileRepository->deleteOldFile($document->file_path);
+            }
+
+            $data->has_error = false;
+            return $data;
+        }
+
+        $data->has_error = true;
         return $data;
     }
 

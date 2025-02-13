@@ -8,7 +8,7 @@
                 @if($documents->isNotEmpty())
                     <div class="row row-cols-4">
                         <h5>@sortablelink('name', 'Название')</h5>
-                        <h5>@sortablelink('created_at', 'Дата')</h5>
+                        <h5>@sortablelink('updated_at', 'Дата')</h5>
                         <h5>@sortablelink('user.name', 'Автор')</h5>
                         <h5>Файл</h5>
                     </div>
@@ -17,9 +17,9 @@
                             <div class="card-body">
                                 <div class="row row-cols-4">
                                     <div class="col">{{ $document->name  }}</div>
-                                    <div class="col">{{ $document->created_at  }}</div>
+                                    <div class="col">{{ $document->updated_at  }}</div>
                                     <div class="col">{{ $document->user->name  }}</div>
-                                    <a class="icon-link" href="{{ Storage::url($document['file_path']) }}">
+                                    <a class="icon-link" href="{{ Storage::url($document->file_path) }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                              class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
                                             <path
@@ -27,6 +27,17 @@
                                         </svg>
                                         {{ $document->file_name }}
                                     </a>
+                                </div>
+                                <div>
+                                    <a href="{{ route('document.edit', $document->id) }}">Редактировать</a>
+                                </div>
+                                <div>
+                                    <form action="{{ route('document.delete', $document->id) }}" method="POST" class="invisible" id="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" value="{{ $document->id }}" name="document"/>
+                                    </form>
+                                    <a class="link-danger" onclick="event.preventDefault(); document.getElementById('delete-form').submit();">Удалить</a>
                                 </div>
                             </div>
                         </div>

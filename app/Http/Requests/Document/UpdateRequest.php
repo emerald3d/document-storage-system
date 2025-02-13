@@ -5,21 +5,31 @@ namespace App\Http\Requests\Document;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     public function getUserId(): int
     {
         return $this->user()->id;
     }
 
-    public function getFile(): UploadedFile
+    public function isUserAdmin(): bool
+    {
+        return $this->user()->isAdmin();
+    }
+
+    public function getFile(): UploadedFile|null
     {
         return $this->file('file');
     }
 
-    public function getName(): string
+    public function getName(): string|null
     {
         return $this->input('name');
+    }
+
+    public function getDocumentId(): string
+    {
+        return $this->input('document_id');
     }
     /**
      * Determine if the user is authorized to make this request.
@@ -37,17 +47,9 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'file' => 'required|file|mimes:docx,pdf',
+            'name' => 'nullable|string',
+            'file' => 'nullable|file|mimes:docx,pdf',
+            'document_id' => 'required|integer',
         ];
-    }
-
-    private array $messages = [
-        'file.required' => 'Файл в документе обязателен.',
-        'file.mimetypes' => 'Допущены только некоторые форматы документов (в тз ясно не сказано).',
-    ];
-
-    public function messages(): array {
-        return $this->messages;
     }
 }

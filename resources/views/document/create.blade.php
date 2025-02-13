@@ -29,7 +29,7 @@
                             <label for="file" class="col-md-4 col-form-label text-md-end">Файл</label>
 
                             <div class="col-md-6">
-                                <input class="form-control" type="file" id="file" name="file">
+                                <input class="form-control @error('file') is-invalid @enderror" type="file" id="file" name="file">
 
                                 @error('file')
                                 <span class="invalid-feedback" role="alert">

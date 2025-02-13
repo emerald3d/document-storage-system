@@ -93,6 +93,7 @@
             @yield('content')
             @yield('document.index')
             @yield('document.create')
+            @yield('document.edit')
         </main>
     </div>
 </body>
