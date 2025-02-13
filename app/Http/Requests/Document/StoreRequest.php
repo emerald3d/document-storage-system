@@ -44,7 +44,7 @@ class StoreRequest extends FormRequest
 
     private array $messages = [
         'file.required' => 'Файл в документе обязателен.',
-        'file.mimetypes' => 'Допущены только некоторые форматы документов (в тз ясно не сказано).',
+        'file.mimes' => 'Файл должен быть формата .docx или .pdf.',
     ];
 
     public function messages(): array {
