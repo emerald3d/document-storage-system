@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\DocumentRepositoryContract;
-use App\Data\DocumentData;
+use App\Http\Actions\DocumentSearchAction;
 use App\Http\Requests\Document\SearchRequest;
 use App\Http\Requests\Document\StoreRequest;
 use App\Http\Requests\Document\UpdateRequest;
@@ -29,7 +29,7 @@ class DocumentController extends Controller
 
         if ($documents->isNotEmpty())
         {
-            $documents = $user->documents->toQuery()->sortable()->paginate(Document::getPaginateNumber());
+            $documents = $user->documents->toQuery()->sortable()->paginate(Document::getPaginateNumber());//todo убирай нафиг этот paginate он фронтом обычно делается, view не отдавай просто объект респонса
         } else
         {
             $documents = collect();
@@ -43,10 +43,11 @@ class DocumentController extends Controller
         return view('document.create');
     }
 
+    //todo сделай по аналогии с search
     public function store(StoreRequest $request): RedirectResponse
     {
         // Чет не понял прикол выносить это в репозиторий) так нелья?:
-        // Document::create(DocumentData::success($request)->toArray());
+        // Document::create(DocumentItemData::success($request)->toArray());
         $documentRepository = app()->make(DocumentRepositoryContract::class);
         $documentRepository->store($request);
 
@@ -84,19 +85,14 @@ class DocumentController extends Controller
         return redirect()->route('document.index');
     }
 
-    public function search(SearchRequest $request): View
+    public function search(SearchRequest $request, DocumentSearchAction $documentSearchAction): View
     {
         $search = $request->input('search');
         $user = $request->user();
 
-        $documentRepository = app()->make(DocumentRepositoryContract::class);
+        $documents = $documentSearchAction->execute($user, $search);
 
-        $documents = $documentRepository->search($search, $user);
-
-        //это случай ошибки бд
-        if ($documents instanceof DocumentData) {
-            //возможно отдавать другой view с ошибкой
-        }
+        //todo сюда бы респонс свой написать
 
         return view('document.index', compact('documents'));
     }

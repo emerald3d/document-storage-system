@@ -11,5 +11,7 @@ interface DocumentRepositoryContract
 {
     public function store(StoreRequest $request): void;
 
-    public function search(string $search, User $user): LengthAwarePaginator;
+    public function searchForAdmin(string $search, User $user): Collection;
+
+    public function searchForUser(string $search, User $user): Collection;
 }
