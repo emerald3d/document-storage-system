@@ -9,7 +9,7 @@ use App\Http\Requests\Document\UpdateRequest;
 use App\Models\Document;
 use Illuminate\Support\Fluent;
 
-class DocumentData extends Fluent
+class DocumentItemData extends Fluent
 {
     //я может быть в типах обосралась хз
     /**
@@ -18,7 +18,7 @@ class DocumentData extends Fluent
      * @property       string    $file_name
      * @property       string    $file_path
      */
-    public static function success(StoreRequest $request): DocumentData
+    public static function success(StoreRequest $request): DocumentItemData
     {
         //лучше вынести работу с файлом в отдельный репозиторий
         $fileRepository = app()->make(FileRepositoryContract::class);
@@ -32,13 +32,12 @@ class DocumentData extends Fluent
         $data->file_name = $fileRepository->getFileName($file);
         $data->file_path = $fileRepository->getFilePath($file, $userId);
 
-        $data->has_error = false;
         return $data;
     }
 
-    public static function update(UpdateRequest $request): DocumentData
+    public static function update(UpdateRequest $request): DocumentItemData
     {
-        $document = Document::find($request->getDocumentId());
+        $document = Document::find($request->getDocumentId());//todo эээ дата только обрабатывает данные, не надо сюда запрос к бд пихать, засунь его в репо и вызови, либо аргументом передай
         $userId = $request->getUserId();
         $userAdmin = $request->isUserAdmin();
 
@@ -73,7 +72,7 @@ class DocumentData extends Fluent
     }
 
     //тут с $e могут быть проблемы с типами
-    public static function error($e): DocumentData
+    public static function error($e): DocumentItemData
     {
         $data = new self();
         $data->message = $e;
